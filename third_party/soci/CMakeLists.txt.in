@@ -8,9 +8,17 @@ ExternalProject_Add(soci
   GIT_TAG master
   GIT_SHALLOW ON
   SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/soci-build"
+  BUILD_IN_SOURCE   ON
+  CONFIGURE_COMMAND "${CMAKE_COMMAND}" . -G "${CMAKE_GENERATOR}"
+                    "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+                    "-DSOCI_STATIC=ON" "-DSOCI_SHARED=OFF" "-DSOCI_TESTS=OFF"
+                    "-DSOCI_CXX11=ON" "-DSOCI_LIBDIR=lib" "-DSOCI_EMPTY=ON"
+                    "-DWITH_SQLITE3=OFF" "-DWITH_POSTGRESQL=OFF"
+                    "-DWITH_BOOST=OFF" "-DWITH_DB2=OFF" "-DWITH_ODBC=OFF"
+                    "-DWITH_ORACLE=OFF" "-DWITH_MYSQL=OFF"
+  BUILD_COMMAND     "${CMAKE_COMMAND}" --build .
   UPDATE_COMMAND ""
   PATCH_COMMAND ""
-  CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
   TEST_COMMAND      "")
