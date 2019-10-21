@@ -7,4 +7,4 @@ target_link_libraries(soci_issue_762
     spdlog
     SOCI::core)
 
-add_dependencies(soci_issue_762 spdlog soci)
+add_dependencies(soci_issue_762 spdlog SOCI::core)

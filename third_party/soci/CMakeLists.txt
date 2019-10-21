@@ -1,31 +1,24 @@
 cmake_minimum_required(VERSION 3.11)
 
-include(FetchContent)
+set(SOCI_OPTIONS "-DSOCI_STATIC=ON -DSOCI_SHARED=ON -DSOCI_TESTS=OFF \
+-DSOCI_CXX11=ON -DSOCI_LIBDIR=lib -DSOCI_EMPTY=OFF -DWITH_SQLITE3=OFF \
+-DWITH_POSTGRESQL=OFF -DWITH_BOOST=OFF -DWITH_DB2=OFF -DWITH_ODBC=OFF \
+-DWITH_ORACLE=OFF -DWITH_MYSQL=OFF")
 
-FetchContent_Declare(soci
-    GIT_REPOSITORY https://github.com/SOCI/soci
-    GIT_TAG master
-    GIT_SHALLOW ON)
-
-FetchContent_GetProperties(soci)
-if(NOT soci_POPULATED)
-  set(SOCI_STATIC ON)
-  set(SOCI_SHARED ON)
-  set(SOCI_TESTS OFF)
-  # set(SOCI_ASAN OFF)
-  set(SOCI_CXX11 ON)
-  set(SOCI_LIBDIR lib)
-  set(WITH_SQLITE3 ON)
-  set(WITH_POSTGRESQL ON)
-  set(WITH_BOOST OFF)
-  set(WITH_DB2 OFF)
-  set(WITH_ODBC OFF)
-  set(WITH_ORACLE OFF)
-  set(WITH_MYSQL OFF)
-  set(SOCI_EMPTY OFF)
-  FetchContent_Populate(soci)
-  add_subdirectory(
-    ${soci_SOURCE_DIR}
-    ${soci_BINARY_DIR}
-    EXCLUDE_FROM_ALL)
+configure_file(CMakeLists.txt.in soci-download/CMakeLists.txt)
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" . ${SOCI_OPTIONS}
+  RESULT_VARIABLE result
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/soci-download)
+if(result)
+  message(FATAL_ERROR "CMake step for soci failed: ${result}")
 endif()
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+  RESULT_VARIABLE result
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/soci-download)
+if(result)
+  message(FATAL_ERROR "Build step for soci failed: ${result}")
+endif()
+
+add_subdirectory("${CMAKE_CURRENT_BINARY_DIR}/soci-src"
+                 "${CMAKE_CURRENT_BINARY_DIR}/soci-build"
+                 EXCLUDE_FROM_ALL)

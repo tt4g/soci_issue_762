@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.11)
+
+project(soci-download NONE)
+
+include(ExternalProject)
+ExternalProject_Add(soci
+  GIT_REPOSITORY https://github.com/SOCI/soci
+  GIT_TAG master
+  GIT_SHALLOW ON
+  SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/soci-src"
+  BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/soci-build"
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+  TEST_COMMAND      "")
