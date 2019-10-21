@@ -7,8 +7,9 @@ ExternalProject_Add(soci
   GIT_REPOSITORY https://github.com/SOCI/soci
   GIT_TAG master
   GIT_SHALLOW ON
-  SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/soci-src"
-  BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/soci-build"
+  SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/soci-build"
+  UPDATE_COMMAND ""
+  PATCH_COMMAND ""
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
